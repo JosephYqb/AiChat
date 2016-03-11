@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>聊天室</title>
+  <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.css" rel="stylesheet">
+</head>
+<style>
+  #chat{
+    margin: 0 20% ;
+  }
+
+</style>
+<body>
+
+<!--显示当人数-->
+<div id="count">
+  <label>
+    当前在线数：
+  </label>
+  <label id="man_count"></label>
+  <!--聊天内容-->
+<div id="chat">
+
+</div>
+
+</div>
+<script src="//cdn.bootcss.com/jquery/3.0.0-beta1/jquery.js"></script>
+<script>
+  /* 计算在线人数*/
+  $(document).ready(function () {
+    var ws = new WebSocket('ws://'+window.location.hostname+':8484');
+    ws.onopen = function () {
+      sent(   );
+    };
+    function sent(data) {
+      ws.send(data);
+      setTimeout(function () {
+        sent(data)
+      }, 10000);
+
+    }
+    ws.onmessage = function (e) {
+      // console.log(e.data);
+      $("#man_count").html(e.data);
+    };
+//document.getElementsByName('z');
+  })
+  ;
+</script>
+
+<script>
+  /*聊天功能*/
+  $(document).ready(
+    function(){
+      var ws = new WebSocket('ws://'+window.location.hostname+':8484');
+
+
+
+
+
+
+
+    }
+
+
+
+
+  );
+
+
+</script>
+</body>
+</html>
