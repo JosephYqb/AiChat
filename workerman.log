@@ -72,3 +72,13 @@
 2016-03-11 16:54:49 Workerman[count.php] has been stopped
 2016-03-11 16:54:49 Workerman[count.php] stop success
 2016-03-11 17:31:50 Workerman[chat.php] start in DAEMON mode
+2016-03-11 18:00:51 Workerman[chat.php] stop 
+2016-03-11 18:00:51 Workerman[chat.php] is stoping ...
+2016-03-11 18:00:51 Workerman[chat.php] Stopping ...
+2016-03-11 18:00:51 Workerman[chat.php] has been stopped
+2016-03-11 18:00:51 Workerman[chat.php] stop success
+2016-03-11 18:00:59 Workerman[count.php] stop 
+2016-03-11 18:00:59 Workerman[count.php] is stoping ...
+2016-03-11 18:00:59 Workerman[count.php] Stopping ...
+2016-03-11 18:00:59 Workerman[count.php] has been stopped
+2016-03-11 18:00:59 Workerman[count.php] stop success
