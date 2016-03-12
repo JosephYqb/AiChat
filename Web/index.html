@@ -2,49 +2,77 @@
 <html>
 <head lang="en">
   <meta charset="UTF-8">
-  <title>聊天室</title>
-  <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.css" rel="stylesheet">
+  <title>战五渣的聊天室</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="css/bootstrap.css" rel="stylesheet">
 </head>
 <style>
-  #chat{
-    margin: 0 20% ;
+  body{
+    height: 100%;
   }
 
+.input-box{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 1px;
+}
+  .chat-content {
+    overflow: auto;
+    height: 500px;
+    max-height: 500px;
+    bottom: 20px;
+  }
 </style>
 <body>
-
-<!--显示当人数-->
-<div id="count">
-  <label>
-    当前在线数：
-  </label>
-  <label id="man_count"></label>
-  <!--聊天内容-->
-<div id="chat">
-
+<div class="container-fluid">
+  <!--显示当人数-->
+  <div id="count" class="form-control">
+    <label class="label-control">
+      当前在线数：
+    </label>
+    <label id="man_count" class="label-control">
+    </label>
+  </div>
 </div>
+<div class="container-fluid chat-content ">
+  <!--聊天部分-->
+  <table class="table table-hover " id="chat">
+  </table>
+  <form class=" input-box row form-group" >
+    <div class="col-xs-12 col-lg-12 form-group">
+      <div class="col-xs-8 col-lg-8">
+        <input class="form-control " id='input_chat'/>
+      </div>
+      <div class="col-xs-4 col-lg-4">
+        <input type='button' class="form-control span2" id='trans' value='发送消息'/>
+      </div>
+    </div>
+  </form>
+</div>
+
 
 </div>
 <script src="//cdn.bootcss.com/jquery/3.0.0-beta1/jquery.js"></script>
 <script>
   /* 计算在线人数*/
   $(document).ready(function () {
-    var ws = new WebSocket('ws://'+window.location.hostname+':8484');
+    var ws = new WebSocket('ws://' + window.location.hostname + ':8484');
     ws.onopen = function () {
-      sent(   );
+      sent(1);
     };
     function sent(data) {
       ws.send(data);
       setTimeout(function () {
         sent(data)
       }, 10000);
-
     }
+
     ws.onmessage = function (e) {
       // console.log(e.data);
       $("#man_count").html(e.data);
     };
-//document.getElementsByName('z');
   })
   ;
 </script>
@@ -52,23 +80,36 @@
 <script>
   /*聊天功能*/
   $(document).ready(
-    function(){
-      var ws = new WebSocket('ws://'+window.location.hostname+':8484');
-
-
-
-
-
-
+    function () {
+      var chat_ws = new WebSocket('ws://' + window.location.hostname + ':5555');
+    var  $chat = $("#chat");
+      var $chat_content = $(".chat-content");
+      chat_ws.onmessage = function (e) {
+        // console.log(e.data);
+        $chat.append(
+          "<tr ><th>" + e.data + "</th></tr>"
+        );
+        $chat_content.scrollTop($chat_content[0].offsetHeight);// todo
+      };
+      var $input = $("#input_chat").keydown(function (e) {
+        var e = e || event;
+        if (e.keyCode == 13) {
+          $trans.click();
+          e.preventDefault();
+        }
+      });
+      // chat_ws
+      var $trans = $("#trans").click(
+        function () {
+          chat_ws.send($input.val());
+          $input.val('').focus();
+        }
+      );
 
     }
-
-
-
-
   );
 
 
 </script>
+
 </body>
-</html>
