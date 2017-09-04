@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>战五渣的聊天室</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<style>
+  body{
+    height: 100%;
+  }
+
+.input-box{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 1px;
+}
+  .chat-content {
+    overflow: auto;
+    height: 500px;
+    max-height: 500px;
+    bottom: 20px;
+  }
+</style>
+<body>
+<div class="container-fluid">
+  <!--显示当人数-->
+  <div id="count" class="form-control">
+    <label class="label-control">
+      当前在线数：
+    </label>
+    <label id="man_count" class="label-control">
+    </label>
+  </div>
+</div>
+<div class="container-fluid chat-content ">
+  <!--聊天部分-->
+  <table class="table table-hover " id="chat">
+  </table>
+  <form class=" input-box row form-group" >
+    <div class="col-xs-12 col-lg-12 form-group">
+      <div class="col-xs-8 col-lg-8">
+        <input class="form-control " id='input_chat'/>
+      </div>
+      <div class="col-xs-4 col-lg-4">
+        <input type='button' class="form-control span2" id='trans' value='发送消息'/>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+</div>
+<script src="//cdn.bootcss.com/jquery/3.0.0-beta1/jquery.js"></script>
+    <script src="http://127.0.0.1:5555/socket.io/socket.io.js"></script>
+
+<script>
+    var  $chat = $("#chat");
+    var $chat_content = $(".chat-content");
+
+    var ws = io.connect('ws://' + window.location.hostname + ':5555');
+
+    ws.on('message',function (e) {
+        console.log(e.type);
+        if(e.type!='count') {
+            $chat.append(
+                "<tr ><th>" + e.msg + "</th></tr>"
+            );
+            $chat_content.scrollTop($chat_content[0].offsetHeight);// todo
+
+        }else{
+            $("#man_count").html(e.msg);
+        }
+    });
+
+    var $trans = $("#trans").click(
+        function () {
+            ws.emit('message',{type:'msg',msg:$input.val()});
+            $input.val('').focus();
+        }
+    );
+
+</script>
+
+
+
+
+
+
+
+<script>
+  /*聊天功能*/
+
+
+
+
+      var $input = $("#input_chat").keydown(function (e) {
+        var e = e || event;
+        if (e.keyCode == 13) {
+          $trans.click();
+          e.preventDefault();
+        }
+      });
+
+</script>
+
+</body>
